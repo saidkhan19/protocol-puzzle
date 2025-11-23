@@ -4,10 +4,22 @@
 @theme {
   --font-space-grotesk: "Space Grotesk", sans-serif;
   --font-work-sans: "Work Sans", sans-serif;
+
+  --shadow-hard-sm: 2px 2px 0px 0px var(--color-blue-900);
+  --shadow-hard: 4px 4px 0px 0px var(--color-blue-900);
+  --shadow-hard-lg: 8px 8px 0px 0px var(--color-blue-900);
+  --shadow-hard-accent: 4px 4px 0px 0px var(--color-yellow-600);
 }
 
 @layer base {
   body {
     font-family: var(--font-work-sans);
   }
+}
+
+#root {
+  background: url("./assets/images/background.svg"),
+    linear-gradient(to bottom, #3271b1, #668bb8);
+
+  @apply min-h-screen flex flex-col items-center;
 }
