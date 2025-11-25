@@ -1,7 +1,7 @@
 const Footer = () => {
   return (
     <footer className="mt-auto text-xs text-sky-900">
-      <p>
+      <p className="mt-8">
         &copy; 2025. Made by&nbsp;
         <a
           href="https://github.com/saidkhan19"

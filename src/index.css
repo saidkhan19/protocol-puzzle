@@ -8,12 +8,13 @@
   --shadow-hard-sm: 2px 2px 0px 0px var(--color-blue-900);
   --shadow-hard: 4px 4px 0px 0px var(--color-blue-900);
   --shadow-hard-lg: 8px 8px 0px 0px var(--color-blue-900);
-  --shadow-hard-accent: 4px 4px 0px 0px var(--color-yellow-600);
+  --shadow-hard-accent: 4px 4px 0px 0px var(--color-amber-500);
+  --shadow-hard-dark: 2px 2px 0px 0px var(--color-black);
 }
 
 @layer base {
   body {
-    font-family: var(--font-work-sans);
+    font-family: var(--font-space-grotesk);
   }
 }
 
