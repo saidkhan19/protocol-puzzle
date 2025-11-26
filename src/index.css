@@ -19,8 +19,18 @@
 }
 
 #root {
-  background: url("./assets/images/background.svg"),
+  background: url("@/assets/images/background.svg"),
     linear-gradient(to bottom, #3271b1, #668bb8);
 
   @apply min-h-screen flex flex-col items-center;
+}
+
+.my-border-dashed-black {
+  border-image: url("@/assets/images/border-dashed-black.png") 33.333% / 20px
+    round;
+}
+
+.my-border-dashed-blue {
+  border-image: url("@/assets/images/border-dashed-blue.svg") 33.333% / 30px
+    round;
 }

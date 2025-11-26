@@ -19,7 +19,7 @@ const App = () => {
   return (
     <>
       <Header />
-      <main className="min-h-[700px] w-full max-w-2xl mt-4 sm:mt-8 px-4 py-8 sm:p-8 bg-sky-50 border-4 border-blue-900 rounded-4xl shadow-hard-lg">
+      <main className="min-h-[700px] w-full max-w-2xl mt-4 sm:mt-8 px-2 py-8 sm:p-8 bg-sky-50 border-4 border-blue-900 rounded-4xl shadow-hard-lg">
         {page === "menu" && (
           <GameMenu
             selectedFrame={selectedFrame}

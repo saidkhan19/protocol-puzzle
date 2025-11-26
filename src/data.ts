@@ -107,9 +107,9 @@ export const FRAMES: ProtocolFrame[] = [
     },
     structure: [
       [
-        { fieldKey: "method", width: 25 },
-        { fieldKey: "uri", width: 50 },
-        { fieldKey: "version", width: 25 },
+        { fieldKey: "method", width: 33.33 },
+        { fieldKey: "uri", width: 33.34 },
+        { fieldKey: "version", width: 33.33 },
       ],
       [{ fieldKey: "headers", width: 100 }],
       [{ fieldKey: "body", width: 100 }],
@@ -149,9 +149,9 @@ export const FRAMES: ProtocolFrame[] = [
     },
     structure: [
       [
-        { fieldKey: "version", width: 25 },
-        { fieldKey: "statusCode", width: 25 },
-        { fieldKey: "statusText", width: 50 },
+        { fieldKey: "version", width: 33.33 },
+        { fieldKey: "statusCode", width: 33.34 },
+        { fieldKey: "statusText", width: 33.33 },
       ],
       [{ fieldKey: "headers", width: 100 }],
       [{ fieldKey: "body", width: 100 }],
@@ -585,10 +585,8 @@ export const FRAMES: ProtocolFrame[] = [
         { fieldKey: "srcMac", width: 27 },
         { fieldKey: "etherType", width: 8 },
       ],
-      [
-        { fieldKey: "payload", width: 100 },
-        { fieldKey: "fcs", width: 100 },
-      ],
+      [{ fieldKey: "payload", width: 100 }],
+      [{ fieldKey: "fcs", width: 100 }],
     ],
   },
 ] as const;
