@@ -1,11 +1,7 @@
-import type { Dispatch, KeyboardEvent, SetStateAction } from "react";
+import type { KeyboardEvent } from "react";
 
 import { FRAMES, type ProtocolFrame } from "@/data";
-
-type ProtocolsProps = {
-  selected: ProtocolFrame | null;
-  onSelect: Dispatch<SetStateAction<ProtocolFrame | null>>;
-};
+import useGameStore from "@/store/useGameStore";
 
 const colors: Record<ProtocolFrame["difficulty"], string> = {
   easy: "bg-green-400",
@@ -13,10 +9,13 @@ const colors: Record<ProtocolFrame["difficulty"], string> = {
   hard: "bg-orange-600",
 };
 
-const Protocols = ({ selected, onSelect }: ProtocolsProps) => {
+const Protocols = () => {
+  const frameId = useGameStore((state) => state.frameId);
+  const setFrameId = useGameStore((state) => state.setFrameId);
+
   const handleKeyDown = (e: KeyboardEvent, frame: ProtocolFrame) => {
     if (e.key === "Enter" || e.key === " ") {
-      onSelect(frame);
+      setFrameId(frame.frameId);
     }
   };
 
@@ -31,11 +30,11 @@ const Protocols = ({ selected, onSelect }: ProtocolsProps) => {
         >
           <div
             className={`h-31 p-3.5 border-3 rounded-2xl border-blue-900 cursor-pointer flex flex-col gap-2 justify-between ${
-              selected === frame
+              frameId === frame.frameId
                 ? "shadow-hard-accent-4"
                 : "shadow-hard-primary-4"
             }`}
-            onClick={() => onSelect(frame)}
+            onClick={() => setFrameId(frame.frameId)}
           >
             <div>
               <p className="font-bold text-base leading-none">

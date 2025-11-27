@@ -1,31 +1,37 @@
-import type { Dispatch, SetStateAction } from "react";
-
 import type { SetPage } from "@/types/page";
-import { type ProtocolFrame } from "@/data";
+import { getFrame, getProtocol } from "@/utils/data-transforms";
 import Protocols from "./Protocols";
-import { getProtocol } from "@/utils/data-transforms";
 import TimerSelect from "./TimerSelect";
+import useGameStore from "@/store/useGameStore";
 
 type GameMenuProps = {
-  selectedFrame: ProtocolFrame | null;
-  setSelectedFrame: Dispatch<SetStateAction<ProtocolFrame | null>>;
   setPage: SetPage;
 };
 
-const GameMenu = ({
-  selectedFrame,
-  setSelectedFrame,
-  setPage,
-}: GameMenuProps) => {
-  const protocol = selectedFrame && getProtocol(selectedFrame.protocolId);
+const GameMenu = ({ setPage }: GameMenuProps) => {
+  const frameId = useGameStore((state) => state.frameId);
+  const bestTime = useGameStore((state) =>
+    frameId ? state.bestTime[frameId] : null
+  );
+  const startGame = useGameStore((state) => state.startGame);
+
+  const frame = frameId ? getFrame(frameId) : null;
+  const protocol = frame && getProtocol(frame.protocolId);
+
+  const handleStartGame = () => {
+    if (!frame) return;
+
+    startGame(frame.frameId);
+    setPage("game");
+  };
 
   return (
     <div className="flex flex-col items-center gap-4">
       <div className="min-h-62 sm:min-h-44 w-3/4 sm:w-2/3">
-        {selectedFrame ? (
+        {frame ? (
           <div className="flex flex-col items-center">
             <h2 className="font-bold text-2xl sm:text-4xl text-center">
-              {selectedFrame.gameTitle}
+              {frame.gameTitle}
             </h2>
             <p className="mt-3 font-bold text-sm text-center">
               {protocol?.description}
@@ -45,9 +51,25 @@ const GameMenu = ({
           </p>
         )}
       </div>
-      <TimerSelect />
+      <div className="py-4">
+        <TimerSelect />
+        {bestTime && (
+          <p className="mt-3 font-work-sans text-center text-sm">
+            Best: {bestTime}s
+          </p>
+        )}
+      </div>
+      <button
+        data-active={Boolean(frame)}
+        className={`h-12 px-12 border-3 shadow-hard-primary-2 text-blue-900
+           font-work-sans font-semibold text-3xl rounded-3xl cursor-pointer
+           data-[active=true]:bg-amber-500`}
+        onClick={handleStartGame}
+      >
+        Play!
+      </button>
       <p className="font-work-sans font-semibold text-sm">Select a protocol:</p>
-      <Protocols selected={selectedFrame} onSelect={setSelectedFrame} />
+      <Protocols />
     </div>
   );
 };

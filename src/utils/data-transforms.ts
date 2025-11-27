@@ -9,3 +9,15 @@ export const getProtocol = (id: string): Protocol => {
 export const getRelatedFrames = (protocolId: string): ProtocolFrame[] => {
   return FRAMES.filter((f) => f.protocolId === protocolId);
 };
+
+export const getFrame = (frameId: string): ProtocolFrame => {
+  const f = FRAMES.find((f) => f.frameId === frameId);
+  if (!f) throw new Error("Invalid frame id");
+  return f;
+};
+
+// export const getFrameByGameTitle = (gameTitle: string): ProtocolFrame => {
+//   const f = FRAMES.find((f) => f.gameTitle === gameTitle);
+//   if (!f) throw new Error("Invalid game title");
+//   return f;
+// };

@@ -2,24 +2,26 @@ import { useState } from "react";
 
 import type { ProtocolField, ProtocolFrame } from "@/data";
 import type { SetPage } from "@/types/page";
-import { getProtocol } from "@/utils/data-transforms";
+import { getFrame, getProtocol } from "@/utils/data-transforms";
 import GoBackButton from "../shared/GoBackButton";
 import Fields from "./Fields";
 import FrameOptions from "./FrameOptions";
 import DescriptionBlock from "./DescriptionBlock";
+import useGameStore from "@/store/useGameStore";
 
 type LearnMenuProps = {
-  selectedFrame: ProtocolFrame | null;
   setPage: SetPage;
 };
 
-const LearnMenu = ({ selectedFrame, setPage }: LearnMenuProps) => {
-  if (!selectedFrame) throw new Error("Frame was not selected");
+const LearnMenu = ({ setPage }: LearnMenuProps) => {
+  const frameId = useGameStore((state) => state.frameId);
+  if (!frameId) throw new Error("Frame was not selected");
 
-  const [activeFrame, setActiveFrame] = useState<ProtocolFrame>(selectedFrame);
+  const currentFrame = getFrame(frameId);
+  const protocol = getProtocol(currentFrame.protocolId);
+
+  const [activeFrame, setActiveFrame] = useState<ProtocolFrame>(currentFrame);
   const [activeField, setActiveField] = useState<ProtocolField | null>(null);
-
-  const protocol = getProtocol(selectedFrame.protocolId);
 
   const handleChangeActiveFrame = (frame: ProtocolFrame) => {
     setActiveFrame(frame);

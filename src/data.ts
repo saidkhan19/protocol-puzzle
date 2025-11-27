@@ -6,6 +6,7 @@ export type ProtocolField = {
 
 export type ProtocolFrame = {
   protocolId: string;
+  frameId: string;
   frameTitle: string;
   gameTitle: string;
   fields: Record<string, ProtocolField>;
@@ -75,6 +76,7 @@ export const PROTOCOLS: Protocol[] = [
 export const FRAMES: ProtocolFrame[] = [
   {
     protocolId: "http",
+    frameId: "http-request",
     frameTitle: "Request",
     gameTitle: "HTTP Request",
     difficulty: "easy",
@@ -117,6 +119,7 @@ export const FRAMES: ProtocolFrame[] = [
   },
   {
     protocolId: "http",
+    frameId: "http-response",
     frameTitle: "Response",
     gameTitle: "HTTP Response",
     difficulty: "easy",
@@ -159,6 +162,7 @@ export const FRAMES: ProtocolFrame[] = [
   },
   {
     protocolId: "tcp",
+    frameId: "tcp",
     frameTitle: "TCP",
     gameTitle: "TCP",
     difficulty: "hard",
@@ -257,6 +261,7 @@ export const FRAMES: ProtocolFrame[] = [
   },
   {
     protocolId: "udp",
+    frameId: "udp",
     frameTitle: "UDP",
     gameTitle: "UDP",
     difficulty: "easy",
@@ -302,6 +307,7 @@ export const FRAMES: ProtocolFrame[] = [
   },
   {
     protocolId: "ipv4",
+    frameId: "ipv4",
     frameTitle: "IPv4",
     gameTitle: "IPv4",
     difficulty: "hard",
@@ -412,6 +418,7 @@ export const FRAMES: ProtocolFrame[] = [
   },
   {
     protocolId: "ipv6",
+    frameId: "ipv6",
     frameTitle: "IPv6",
     gameTitle: "IPv6",
     difficulty: "medium",
@@ -485,6 +492,7 @@ export const FRAMES: ProtocolFrame[] = [
   },
   {
     protocolId: "icmp",
+    frameId: "icmp",
     frameTitle: "ICMP",
     gameTitle: "ICMP",
     difficulty: "medium",
@@ -531,6 +539,7 @@ export const FRAMES: ProtocolFrame[] = [
   },
   {
     protocolId: "ethernet",
+    frameId: "ethernet-2",
     frameTitle: "Ethernet II",
     gameTitle: "Ethernet II",
     difficulty: "medium",
