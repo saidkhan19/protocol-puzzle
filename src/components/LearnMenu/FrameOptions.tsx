@@ -21,7 +21,7 @@ const FrameOptions = ({
       {relatedFrames.map((frame) => (
         <button
           key={frame.frameTitle}
-          className={`px-4 py-1 font-bold text-sm border-2 border-blue-900 shadow-hard-sm rounded-2xl cursor-pointer tracking-widest ${
+          className={`px-4 py-1 font-bold text-sm border-2 border-blue-900 shadow-hard-primary-2 rounded-2xl cursor-pointer tracking-widest ${
             frame === activeFrame ? "bg-amber-500" : ""
           }`}
           onClick={() => setActiveFrame(frame)}

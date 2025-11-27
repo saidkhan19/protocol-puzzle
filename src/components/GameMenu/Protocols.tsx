@@ -31,7 +31,9 @@ const Protocols = ({ selected, onSelect }: ProtocolsProps) => {
         >
           <div
             className={`h-31 p-3.5 border-3 rounded-2xl border-blue-900 cursor-pointer flex flex-col gap-2 justify-between ${
-              selected === frame ? "shadow-hard-accent" : "shadow-hard"
+              selected === frame
+                ? "shadow-hard-accent-4"
+                : "shadow-hard-primary-4"
             }`}
             onClick={() => onSelect(frame)}
           >

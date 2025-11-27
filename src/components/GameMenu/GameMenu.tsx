@@ -4,6 +4,7 @@ import type { SetPage } from "@/types/page";
 import { type ProtocolFrame } from "@/data";
 import Protocols from "./Protocols";
 import { getProtocol } from "@/utils/data-transforms";
+import TimerSelect from "./TimerSelect";
 
 type GameMenuProps = {
   selectedFrame: ProtocolFrame | null;
@@ -30,7 +31,7 @@ const GameMenu = ({
               {protocol?.description}
             </p>
             <button
-              className="mt-3 px-6 border-2 border-black shadow-hard-dark font-bold text-sm cursor-pointer"
+              className="mt-3 px-6 border-2 border-black shadow-hard-dark-2 font-bold text-sm cursor-pointer"
               onClick={() => setPage("learn")}
             >
               Learn
@@ -44,6 +45,8 @@ const GameMenu = ({
           </p>
         )}
       </div>
+      <TimerSelect />
+      <p className="font-work-sans font-semibold text-sm">Select a protocol:</p>
       <Protocols selected={selectedFrame} onSelect={setSelectedFrame} />
     </div>
   );

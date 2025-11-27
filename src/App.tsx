@@ -10,7 +10,7 @@ import LearnMenu from "./components/LearnMenu";
 import useGameStore from "./store/useGameStore";
 
 const App = () => {
-  const isPlaying = useGameStore((state) => Boolean(state.protocolId));
+  const isPlaying = useGameStore((state) => Boolean(state.gameTitle));
   const [page, setPage] = useState<Page>(isPlaying ? "game" : "menu");
   const [selectedFrame, setSelectedFrame] = useState<ProtocolFrame | null>(
     null
@@ -19,7 +19,7 @@ const App = () => {
   return (
     <>
       <Header />
-      <main className="min-h-[700px] w-full max-w-2xl mt-4 sm:mt-8 px-2 py-8 sm:p-8 bg-sky-50 border-4 border-blue-900 rounded-4xl shadow-hard-lg">
+      <main className="min-h-[700px] w-full max-w-2xl mt-4 sm:mt-8 px-2 py-8 sm:p-8 bg-sky-50 border-4 border-blue-900 rounded-4xl shadow-hard-primary-8">
         {page === "menu" && (
           <GameMenu
             selectedFrame={selectedFrame}

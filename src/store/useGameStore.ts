@@ -1,16 +1,16 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
+import { INFINITY_VALUE, type GameDuration } from "@/consts/durations";
+
 type GameStoreState = {
-  protocolId: string | null;
+  gameDuration: GameDuration;
   gameTitle: string | null;
 };
 
 type GameStoreActions = {
-  startGame: (
-    protocolId: GameStoreState["protocolId"],
-    gameTitle: GameStoreState["gameTitle"]
-  ) => void;
+  setGameDuration: (duration: GameDuration) => void;
+  startGame: (gameTitle: GameStoreState["gameTitle"]) => void;
 };
 
 type GameStore = GameStoreState & GameStoreActions;
@@ -18,9 +18,10 @@ type GameStore = GameStoreState & GameStoreActions;
 const useGameStore = create<GameStore>()(
   persist(
     (set) => ({
-      protocolId: null,
+      gameDuration: INFINITY_VALUE,
       gameTitle: null,
-      startGame: (protocolId, gameTitle) => set({ protocolId, gameTitle }),
+      setGameDuration: (duration) => set({ gameDuration: duration }),
+      startGame: (gameTitle) => set({ gameTitle }),
     }),
     {
       name: "game",

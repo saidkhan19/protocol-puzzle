@@ -5,11 +5,12 @@
   --font-space-grotesk: "Space Grotesk", sans-serif;
   --font-work-sans: "Work Sans", sans-serif;
 
-  --shadow-hard-sm: 2px 2px 0px 0px var(--color-blue-900);
-  --shadow-hard: 4px 4px 0px 0px var(--color-blue-900);
-  --shadow-hard-lg: 8px 8px 0px 0px var(--color-blue-900);
-  --shadow-hard-accent: 4px 4px 0px 0px var(--color-amber-500);
-  --shadow-hard-dark: 2px 2px 0px 0px var(--color-black);
+  --shadow-hard-primary-2: 2px 2px 0px 0px var(--color-blue-900);
+  --shadow-hard-primary-3: 3px 3px 0px 0px var(--color-blue-900);
+  --shadow-hard-primary-4: 4px 4px 0px 0px var(--color-blue-900);
+  --shadow-hard-primary-8: 8px 8px 0px 0px var(--color-blue-900);
+  --shadow-hard-accent-4: 4px 4px 0px 0px var(--color-amber-500);
+  --shadow-hard-dark-2: 2px 2px 0px 0px var(--color-black);
 }
 
 @layer base {

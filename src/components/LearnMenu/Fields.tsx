@@ -29,7 +29,7 @@ const FieldRow = ({
             className="p-1 sm:p-1.5"
           >
             <div
-              className={`h-11 px-0.5 flex justify-center items-center border-2 sm:border-3 border-blue-900 shadow-hard-sm rounded-2xl cursor-pointer ${
+              className={`h-11 px-0.5 flex justify-center items-center border-2 sm:border-3 border-blue-900 shadow-hard-primary-2 rounded-2xl cursor-pointer ${
                 activeField === currentField ? "bg-amber-500" : ""
               }`}
               onClick={() => setActiveField(currentField)}
