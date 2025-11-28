@@ -1,4 +1,4 @@
-import type { KeyboardEvent } from "react";
+import { type KeyboardEvent } from "react";
 
 import { FRAMES, type ProtocolFrame } from "@/data";
 import useGameStore from "@/store/useGameStore";
@@ -13,9 +13,13 @@ const Protocols = () => {
   const frameId = useGameStore((state) => state.frameId);
   const setFrameId = useGameStore((state) => state.setFrameId);
 
+  const handleSetFrameId = (id: string) => {
+    setFrameId(id === frameId ? null : id);
+  };
+
   const handleKeyDown = (e: KeyboardEvent, frame: ProtocolFrame) => {
     if (e.key === "Enter" || e.key === " ") {
-      setFrameId(frame.frameId);
+      handleSetFrameId(frame.frameId);
     }
   };
 
@@ -29,12 +33,13 @@ const Protocols = () => {
           onKeyDown={(e) => handleKeyDown(e, frame)}
         >
           <div
+            data-frame-id={frame.frameId}
             className={`h-31 p-3.5 border-3 rounded-2xl border-blue-900 cursor-pointer flex flex-col gap-2 justify-between ${
               frameId === frame.frameId
                 ? "shadow-hard-accent-4"
                 : "shadow-hard-primary-4"
             }`}
-            onClick={() => setFrameId(frame.frameId)}
+            onClick={() => handleSetFrameId(frame.frameId)}
           >
             <div>
               <p className="font-bold text-base leading-none">

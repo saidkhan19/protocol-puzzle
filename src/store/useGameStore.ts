@@ -13,15 +13,16 @@ type GameStoreState = {
 
 type GameStoreActions = {
   setGameDuration: (duration: GameDuration) => void;
-  setFrameId: (frameId: string) => void;
-  startGame: (frameId: GameStoreState["frameId"]) => void;
+  setFrameId: (frameId: GameStoreState["frameId"]) => void;
+  startGame: () => void;
+  stopGame: () => void;
 };
 
 type GameStore = GameStoreState & GameStoreActions;
 
 const useGameStore = create<GameStore>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       gameDuration: INFINITY_VALUE,
       frameId: null,
       isPlaying: false,
@@ -30,7 +31,10 @@ const useGameStore = create<GameStore>()(
       },
       setGameDuration: (duration) => set({ gameDuration: duration }),
       setFrameId: (frameId) => set({ frameId }),
-      startGame: (frameId) => set({ frameId, isPlaying: true }),
+      startGame: () => {
+        if (get().frameId) set({ isPlaying: true });
+      },
+      stopGame: () => set({ isPlaying: false }),
     }),
     {
       name: "game",
