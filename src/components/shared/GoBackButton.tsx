@@ -7,7 +7,7 @@ type GoBackButtonProps = {
 const GoBackButton = ({ onClick }: GoBackButtonProps) => {
   return (
     <button
-      className="absolute left-0 top-0 px-3 py-1.5 bg-amber-500 shadow-hard-primary-4 rounded-md cursor-pointer"
+      className="absolute left-0 top-0 px-2 py-1 sm:px-3 sm:py-1.5 bg-amber-500 shadow-hard-primary-4 rounded-md cursor-pointer"
       title="Go back"
       onClick={onClick}
     >

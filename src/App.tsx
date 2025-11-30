@@ -6,11 +6,9 @@ import Header from "./components/layout/Header";
 import GameMenu from "./components/GameMenu";
 import Gameplay from "./components/Gameplay";
 import LearnMenu from "./components/LearnMenu";
-import useGameStore from "./store/useGameStore";
 
 const App = () => {
-  const isPlaying = useGameStore((state) => state.gameStatus !== "idle");
-  const [page, setPage] = useState<Page>(isPlaying ? "game" : "menu");
+  const [page, setPage] = useState<Page>("menu");
 
   return (
     <>

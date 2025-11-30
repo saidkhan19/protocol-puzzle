@@ -13,16 +13,13 @@ const Gameplay = ({ setPage }: GamePlayProps) => {
   const frameId = useGameStore((state) => state.frameId);
   if (!frameId) throw new Error("Frame was not selected");
 
-  const startTime = useGameStore((state) => state.gameStartTime);
-  if (!startTime) throw new Error("Game did not start");
-
   const duration = useGameStore((state) => state.gameDuration);
-  const stopGame = useGameStore((state) => state.stopGame);
+  const resetGame = useGameStore((state) => state.resetGame);
 
   const frame = getFrame(frameId);
 
   const handleGoBack = () => {
-    stopGame();
+    resetGame();
     setPage("menu");
   };
 
@@ -33,11 +30,7 @@ const Gameplay = ({ setPage }: GamePlayProps) => {
         <h2 className="font-bold text-2xl sm:text-4xl">{frame.gameTitle}</h2>
       </div>
       <div className="py-6 flex justify-center">
-        {typeof duration === "number" ? (
-          <Timer duration={duration} startTime={startTime} />
-        ) : (
-          <InfiniteTimer startTime={startTime} />
-        )}
+        {typeof duration === "number" ? <Timer /> : <InfiniteTimer />}
       </div>
     </div>
   );

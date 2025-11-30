@@ -1,32 +1,9 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-import { INFINITY_VALUE, type GameDuration } from "@/consts/durations";
-import type { ProtocolFrame } from "@/data";
-
-type GameStatus =
-  | "idle" // not-started
-  | "active" // playing
-  | "won"
-  | "lost"
-  | "timeout";
-
-type GameStoreState = {
-  gameDuration: GameDuration;
-  frameId: ProtocolFrame["frameId"] | null;
-  gameStatus: GameStatus;
-  gameStartTime: number | null;
-  bestTime: Record<string, number>; // Map each frameId to its bestTime
-};
-
-type GameStoreActions = {
-  setGameDuration: (duration: GameDuration) => void;
-  setFrameId: (frameId: GameStoreState["frameId"]) => void;
-  startGame: () => Promise<void>;
-  stopGame: () => void;
-};
-
-type GameStore = GameStoreState & GameStoreActions;
+import { INFINITY_VALUE } from "@/consts/durations";
+import type { GameStore } from "./types";
+import { getElapsedTimeInSeconds } from "@/utils/game";
 
 const useGameStore = create<GameStore>()(
   persist(
@@ -35,27 +12,63 @@ const useGameStore = create<GameStore>()(
       frameId: null,
       gameStatus: "idle",
       gameStartTime: null,
-      bestTime: {
-        udp: 10,
-      },
+      timeoutId: undefined,
+      bestTime: {},
       setGameDuration: (duration) => set({ gameDuration: duration }),
       setFrameId: (frameId) => set({ frameId }),
       startGame: async () => {
         const state = get();
-        if (!state.frameId) return;
+        if (!state.frameId || state.gameStatus === "active") return;
 
-        set({ gameStatus: "active", gameStartTime: Date.now() });
+        // Initialize state and schedule a timer
+        let timeoutId: GameStore["timeoutId"];
 
         if (typeof state.gameDuration === "number") {
-          setTimeout(state.stopGame, state.gameDuration);
+          timeoutId = setTimeout(
+            () => state.stopGame("timeout"),
+            state.gameDuration
+          );
         }
+
+        set({ gameStatus: "active", gameStartTime: Date.now(), timeoutId });
       },
-      stopGame: () => {
-        set({ gameStatus: "idle", gameStartTime: null });
+      stopGame: (status) => {
+        const state = get();
+
+        // Only stop if game is active
+        if (state.gameStatus !== "active") return;
+
+        // Clear the timeout
+        clearTimeout(state.timeoutId);
+
+        // Calculate best time
+        const bestTime: GameStore["bestTime"] = { ...state.bestTime };
+        if (status === "won") {
+          const time = getElapsedTimeInSeconds(state.gameStartTime!);
+          const prevTime = bestTime[state.frameId!] ?? Infinity;
+
+          bestTime[state.frameId!] = time < prevTime ? time : prevTime;
+        }
+
+        set({ gameStatus: status, bestTime });
+      },
+      resetGame: () => {
+        // Clear the timeout
+        clearTimeout(get().timeoutId);
+
+        set({
+          gameStatus: "idle",
+          gameStartTime: null,
+        });
       },
     }),
     {
       name: "game",
+      partialize: (state) => ({
+        frameId: state.frameId,
+        bestTime: state.bestTime,
+        gameDuration: state.gameDuration,
+      }),
     }
   )
 );
