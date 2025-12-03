@@ -4,6 +4,8 @@ import useGameStore from "@/store/useGameStore";
 import { getFrame } from "@/utils/data-transforms";
 import Timer from "./Timer";
 import InfiniteTimer from "./InfiniteTimer";
+import GameBlock from "./GameBlock";
+import GameProvider from "./GameProvider";
 
 type GamePlayProps = {
   setPage: SetPage;
@@ -32,6 +34,9 @@ const Gameplay = ({ setPage }: GamePlayProps) => {
       <div className="py-6 flex justify-center">
         {typeof duration === "number" ? <Timer /> : <InfiniteTimer />}
       </div>
+      <GameProvider>
+        <GameBlock />
+      </GameProvider>
     </div>
   );
 };

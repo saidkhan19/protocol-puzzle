@@ -1,5 +1,7 @@
-import type { ProtocolField, ProtocolFrame } from "@/data";
 import type { Dispatch, SetStateAction } from "react";
+
+import type { ProtocolField, ProtocolFrame } from "@/data";
+import { getField } from "@/utils/data-transforms";
 
 type FieldsProps = {
   frame: ProtocolFrame;
@@ -20,11 +22,11 @@ const FieldRow = ({
   return (
     <div className="flex">
       {row.map((field) => {
-        const currentField = frame.fields[field.fieldKey];
+        const currentField = getField(frame, field.fieldId);
 
         return (
           <div
-            key={field.fieldKey}
+            key={field.fieldId}
             style={{ width: `${field.width}%` }}
             className="p-1 sm:p-1.5"
           >

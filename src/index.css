@@ -27,11 +27,10 @@
 }
 
 .my-border-dashed-black {
-  border-image: url("@/assets/images/border-dashed-black.png") 33.333% / 20px
+  border-image: url("@/assets/images/border-dashed-black.png") 33.333% / auto
     round;
 }
 
 .my-border-dashed-blue {
-  border-image: url("@/assets/images/border-dashed-blue.svg") 33.333% / 30px
-    round;
+  border-image: url("@/assets/images/border-dashed-blue.png") 32 / 22px round;
 }

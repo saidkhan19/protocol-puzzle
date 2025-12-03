@@ -1,4 +1,10 @@
-import { FRAMES, PROTOCOLS, type Protocol, type ProtocolFrame } from "@/data";
+import {
+  FRAMES,
+  PROTOCOLS,
+  type Protocol,
+  type ProtocolField,
+  type ProtocolFrame,
+} from "@/data";
 
 export const getProtocol = (id: string): Protocol => {
   const p = PROTOCOLS.find((p) => p.id === id);
@@ -16,8 +22,11 @@ export const getFrame = (frameId: string): ProtocolFrame => {
   return f;
 };
 
-// export const getFrameByGameTitle = (gameTitle: string): ProtocolFrame => {
-//   const f = FRAMES.find((f) => f.gameTitle === gameTitle);
-//   if (!f) throw new Error("Invalid game title");
-//   return f;
-// };
+export const getField = (
+  frame: ProtocolFrame,
+  fieldId: string
+): ProtocolField => {
+  const f = frame.fields.find((f) => f.id === fieldId);
+  if (!f) throw new Error("Invalid field id");
+  return f;
+};
