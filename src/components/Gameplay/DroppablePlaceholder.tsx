@@ -11,7 +11,7 @@ type PlaceholderProps = {
 
 const DroppablePlaceholder = ({ field }: PlaceholderProps) => {
   const { frame, getFieldAt } = useGameContext();
-  const { setNodeRef } = useDroppable({ id: field.fieldId });
+  const { setNodeRef, isOver } = useDroppable({ id: field.fieldId });
 
   const fieldInfo = getField(frame, field.fieldId);
   const insertedField = getFieldAt(field.fieldId);
@@ -23,10 +23,15 @@ const DroppablePlaceholder = ({ field }: PlaceholderProps) => {
     >
       <div
         ref={setNodeRef}
-        data-placeholder
-        className="relative h-12 flex justify-center items-center my-border-dashed-blue select-none group"
+        data-inserted={Boolean(insertedField)}
+        className="relative h-12 flex justify-center items-center my-border-dashed-blue select-none rounded-2xl"
       >
-        {insertedField && <DraggableField field={insertedField} />}
+        {isOver && (
+          <div className="absolute rounded-2xl -inset-1 border-4 border-amber-500" />
+        )}
+        {insertedField && (
+          <DraggableField field={insertedField} isInserted={true} />
+        )}
         <p className="w-full px-1 absolute left-0 top-1/2 -translate-y-1/2 font-bold text-xs tracking-widest text-gray-600 text-nowrap text-center leading-none">
           <span className="align-middle pr-0.5">{"["}</span>
           <span className="inline-block max-w-1/2 overflow-hidden text-clip align-middle">

@@ -7,6 +7,7 @@ export type GameContextValue = {
   isInserted: (fieldId: string) => boolean;
   getFieldAt: (positionId: string) => ProtocolField | null;
   insertField: (fieldId: string, positionId: string) => void;
+  swapFields: (fieldId1: string, fieldId2: string) => void;
   getUninsertedFields: () => ProtocolField[];
 };
 

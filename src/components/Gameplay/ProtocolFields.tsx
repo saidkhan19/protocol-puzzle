@@ -1,9 +1,9 @@
 import { useState } from "react";
 
 import { shuffle } from "@/utils/array";
+import type { ProtocolField } from "@/data";
 import { useGameContext } from "./context";
 import DraggableField from "./DraggableField";
-import type { ProtocolField } from "@/data";
 
 const MAX_DISPLAYED_FIELDS = 7;
 

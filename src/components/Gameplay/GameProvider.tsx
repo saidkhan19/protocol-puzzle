@@ -35,6 +35,19 @@ const GameProvider = ({ children }: GameProviderProps) => {
         return next;
       });
     },
+    swapFields: (fieldId1, fieldId2) => {
+      setPositions((prev) => {
+        const next = new BiMap(prev);
+        const pos1 = next.getKey(fieldId1);
+        const pos2 = next.getKey(fieldId2);
+
+        if (!pos1 || !pos2) return prev;
+
+        next.set(pos2, fieldId1);
+        next.set(pos1, fieldId2);
+        return next;
+      });
+    },
     getUninsertedFields: () =>
       frame.fields.filter((f) => !positions.hasValue(f.id)),
   };
