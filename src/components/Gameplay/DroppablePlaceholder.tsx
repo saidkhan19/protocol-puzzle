@@ -23,9 +23,9 @@ const DroppablePlaceholder = ({ field }: PlaceholderProps) => {
     >
       <div
         ref={setNodeRef}
-        data-inserted={Boolean(insertedField)}
-        className="relative h-12 flex justify-center items-center my-border-dashed-blue select-none rounded-2xl"
+        className="relative h-12 flex justify-center items-center select-none rounded-2xl"
       >
+        <div className="absolute inset-0.5 my-border-dashed-blue" />
         {isOver && (
           <div className="absolute rounded-2xl -inset-1 border-4 border-amber-500" />
         )}

@@ -19,7 +19,8 @@ const DraggableField = ({ field, ...props }: DraggableFieldProps) => {
       {...listeners}
       {...attributes}
       {...props}
-      style={isDragging ? { opacity: 0, width: "fit-content" } : undefined}
+      isDragging={isDragging}
+      style={isDragging ? { opacity: 0 } : undefined}
     />
   );
 };

@@ -19,19 +19,21 @@ const Field = ({
   ...props
 }: FieldProps) => {
   let classNames =
-    "px-6 py-2 border-3 border-blue-900 bg-sky-50 shadow-hard-primary-2 cursor-grab z-50 select-none text-center touch-none";
+    "flex justify-center items-center border-3 border-blue-900 bg-sky-50 shadow-hard-primary-2 cursor-grab select-none text-center touch-none text-xs z-50";
 
   if (isDragging) {
-    classNames += " w-fit rounded-3xl";
+    classNames += " px-4 py-2 w-fit max-w-40 rounded-3xl";
   } else if (isInserted) {
-    classNames += " w-full h-full rounded-2xl";
+    classNames += " p-1 w-full h-full rounded-2xl sm:text-sm";
   } else {
-    classNames += " rounded-3xl";
+    classNames += " px-6 py-3 rounded-3xl sm:text-sm";
   }
 
   return (
     <div ref={ref} style={style} {...props} className={classNames}>
-      <span className="font-bold text-sm tracking-widest">{field.name}</span>
+      <span className="font-bold tracking-widest leading-none text-clip overflow-hidden">
+        {field.name}
+      </span>
     </div>
   );
 };
