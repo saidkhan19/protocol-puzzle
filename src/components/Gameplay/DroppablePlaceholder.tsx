@@ -1,20 +1,27 @@
 import { useDroppable } from "@dnd-kit/core";
 
-import { useGameContext } from "./context";
 import { getField } from "@/utils/data-transforms";
 import type { ProtocolFrame } from "@/data";
 import DraggableField from "./DraggableField";
+import useGameStore from "@/store/useGameStore";
+import { useActiveFrame } from "@/store/selectors";
 
 type PlaceholderProps = {
   field: ProtocolFrame["structure"][number][number];
 };
 
 const DroppablePlaceholder = ({ field }: PlaceholderProps) => {
-  const { frame, getFieldAt } = useGameContext();
-  const { setNodeRef, isOver } = useDroppable({ id: field.fieldId });
+  const frame = useActiveFrame();
+  const gameStatus = useGameStore((state) => state.gameStatus);
+  const getInsertedField = useGameStore((state) => state.getField);
+
+  const { setNodeRef, isOver } = useDroppable({
+    id: field.fieldId,
+    disabled: gameStatus !== "active",
+  });
 
   const fieldInfo = getField(frame, field.fieldId);
-  const insertedField = getFieldAt(field.fieldId);
+  const insertedField = getInsertedField(field.fieldId);
 
   return (
     <div

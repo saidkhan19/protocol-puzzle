@@ -1,8 +1,15 @@
-import { useEffect, useState } from "react";
-import { motion, useMotionValue, useTransform, animate } from "motion/react";
+import { useEffect, useRef, useState } from "react";
+import {
+  motion,
+  useMotionValue,
+  useTransform,
+  animate,
+  type AnimationPlaybackControls,
+} from "motion/react";
 
 import useGameStore from "@/store/useGameStore";
 import { getRemainingTimeInSeconds } from "@/utils/game";
+import { assertGameStartTime } from "@/store/assert";
 
 const getProgress = (startTime: number, duration: number) => {
   return (Date.now() - startTime) / duration;
@@ -10,7 +17,7 @@ const getProgress = (startTime: number, duration: number) => {
 
 const Timer = () => {
   const startTime = useGameStore((state) => state.gameStartTime);
-  if (!startTime) throw new Error("Game did not start");
+  assertGameStartTime(startTime);
 
   const duration = useGameStore((state) => state.gameDuration);
   if (typeof duration !== "number") throw new Error("Invalid timer duration");
@@ -20,6 +27,7 @@ const Timer = () => {
   const [timer, setTimer] = useState<number>(
     getRemainingTimeInSeconds(startTime, duration)
   );
+  const animationRef = useRef<AnimationPlaybackControls | null>(null);
   const x = useMotionValue(getProgress(startTime, duration));
   const width = useTransform(x, [0, 1], ["100%", "0%"]);
   const backgroundColor = useTransform(
@@ -33,12 +41,16 @@ const Timer = () => {
   );
 
   useEffect(() => {
-    animate(x, 1, {
-      duration: (startTime + duration - Date.now()) / 1000,
-      ease: "linear",
-      onComplete: () => setTimer(0),
-    });
-  }, [x, startTime, duration]);
+    if (gameStatus === "active") {
+      animationRef.current = animate(x, 1, {
+        duration: (startTime + duration - Date.now()) / 1000,
+        ease: "linear",
+        onComplete: () => setTimer(0),
+      });
+    } else {
+      animationRef.current?.stop();
+    }
+  }, [x, startTime, duration, gameStatus]);
 
   useEffect(() => {
     if (gameStatus === "active") {

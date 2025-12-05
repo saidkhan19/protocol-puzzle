@@ -1,6 +1,6 @@
 import type { ProtocolFrame } from "@/data";
-import { useGameContext } from "./context";
 import DroppablePlaceholder from "./DroppablePlaceholder";
+import { useActiveFrame } from "@/store/selectors";
 
 type FieldRowProps = {
   row: ProtocolFrame["structure"][number];
@@ -17,7 +17,7 @@ const FieldRow = ({ row }: FieldRowProps) => {
 };
 
 const ProtocolStructure = () => {
-  const { frame } = useGameContext();
+  const frame = useActiveFrame();
 
   return (
     <div>

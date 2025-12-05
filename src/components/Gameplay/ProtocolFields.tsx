@@ -2,14 +2,14 @@ import { useState } from "react";
 
 import { shuffle } from "@/utils/array";
 import type { ProtocolField } from "@/data";
-import { useGameContext } from "./context";
 import DraggableField from "./DraggableField";
+import StopGameButton from "./StopGameButton";
+import { useUninsertedFields } from "@/store/selectors";
 
 const MAX_DISPLAYED_FIELDS = 7;
 
 const ProtocolFields = () => {
-  const { getUninsertedFields } = useGameContext();
-  const fields = getUninsertedFields();
+  const fields = useUninsertedFields();
 
   const [shuffledIds] = useState(() => {
     const ids = fields.map((f) => f.id);
@@ -23,6 +23,13 @@ const ProtocolFields = () => {
     .map((id) => fieldMap.get(id))
     .filter(Boolean) // Remove fields that no longer exist
     .slice(0, MAX_DISPLAYED_FIELDS) as ProtocolField[];
+
+  if (displayedFields.length === 0)
+    return (
+      <div className="flex justify-center">
+        <StopGameButton />
+      </div>
+    );
 
   return (
     <div className="flex flex-wrap gap-4 justify-center">

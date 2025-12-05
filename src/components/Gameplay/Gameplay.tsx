@@ -1,24 +1,19 @@
 import type { SetPage } from "@/types/page";
 import GoBackButton from "../shared/GoBackButton";
 import useGameStore from "@/store/useGameStore";
-import { getFrame } from "@/utils/data-transforms";
 import Timer from "./Timer";
 import InfiniteTimer from "./InfiniteTimer";
 import GameBlock from "./GameBlock";
-import GameProvider from "./GameProvider";
+import { useActiveFrame } from "@/store/selectors";
 
 type GamePlayProps = {
   setPage: SetPage;
 };
 
 const Gameplay = ({ setPage }: GamePlayProps) => {
-  const frameId = useGameStore((state) => state.frameId);
-  if (!frameId) throw new Error("Frame was not selected");
-
+  const frame = useActiveFrame();
   const duration = useGameStore((state) => state.gameDuration);
   const resetGame = useGameStore((state) => state.resetGame);
-
-  const frame = getFrame(frameId);
 
   const handleGoBack = () => {
     resetGame();
@@ -34,9 +29,8 @@ const Gameplay = ({ setPage }: GamePlayProps) => {
       <div className="py-6 flex justify-center">
         {typeof duration === "number" ? <Timer /> : <InfiniteTimer />}
       </div>
-      <GameProvider>
-        <GameBlock />
-      </GameProvider>
+
+      <GameBlock />
     </div>
   );
 };

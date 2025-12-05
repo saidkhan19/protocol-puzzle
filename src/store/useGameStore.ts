@@ -2,8 +2,11 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 import { INFINITY_VALUE } from "@/consts/durations";
-import type { GameStore } from "./types";
+import type { GameStatus, GameStore } from "./types";
 import { getElapsedTimeInSeconds } from "@/utils/game";
+import { assertFrameId, assertGameStartTime, assertInsertions } from "./assert";
+import { getFrame } from "@/utils/data-transforms";
+import BiMap from "@/lib/BiMap";
 
 const useGameStore = create<GameStore>()(
   persist(
@@ -12,7 +15,6 @@ const useGameStore = create<GameStore>()(
       frameId: null,
       gameStatus: "idle",
       gameStartTime: null,
-      timeoutId: undefined,
       bestTime: {},
       setGameDuration: (duration) => set({ gameDuration: duration }),
       setFrameId: (frameId) => set({ frameId }),
@@ -25,29 +27,47 @@ const useGameStore = create<GameStore>()(
 
         if (typeof state.gameDuration === "number") {
           timeoutId = setTimeout(
-            () => state.stopGame("timeout"),
+            () => state.stopGame(true),
             state.gameDuration
           );
         }
 
-        set({ gameStatus: "active", gameStartTime: Date.now(), timeoutId });
+        set({
+          gameStatus: "active",
+          gameStartTime: Date.now(),
+          timeoutId,
+          insertions: new BiMap(),
+        });
       },
-      stopGame: (status) => {
+      stopGame: (timeout = false) => {
         const state = get();
-
         // Only stop if game is active
         if (state.gameStatus !== "active") return;
-
         // Clear the timeout
         clearTimeout(state.timeoutId);
+
+        // Calculate game results
+        const { frameId, insertions, gameStartTime } = state;
+        assertFrameId(frameId);
+        assertInsertions(insertions);
+        assertGameStartTime(gameStartTime);
+
+        const frame = getFrame(frameId);
+        const hasWon = frame.fields.every((f) => insertions.get(f.id) === f.id);
+
+        const status: GameStatus = hasWon
+          ? "won"
+          : timeout
+          ? "timeout"
+          : "lost";
 
         // Calculate best time
         const bestTime: GameStore["bestTime"] = { ...state.bestTime };
         if (status === "won") {
-          const time = getElapsedTimeInSeconds(state.gameStartTime!);
-          const prevTime = bestTime[state.frameId!] ?? Infinity;
+          const time = getElapsedTimeInSeconds(gameStartTime);
+          const prevTime = bestTime[frameId] ?? Infinity;
 
-          bestTime[state.frameId!] = time < prevTime ? time : prevTime;
+          bestTime[frameId] = time < prevTime ? time : prevTime;
         }
 
         set({ gameStatus: status, bestTime });
@@ -59,7 +79,38 @@ const useGameStore = create<GameStore>()(
         set({
           gameStatus: "idle",
           gameStartTime: null,
+          insertions: undefined,
         });
+      },
+      insertField: (fieldId, positionId) => {
+        set((state) => {
+          assertInsertions(state.insertions);
+
+          const next = new BiMap(state.insertions);
+
+          // if this field was already inserted and position has a field, then swap them
+          if (next.hasKey(fieldId) && next.hasValue(positionId)) {
+            const swapPosition = next.get(fieldId)!;
+            const swapField = next.getKey(positionId)!;
+            next.set(swapField, swapPosition);
+          }
+
+          next.set(fieldId, positionId);
+
+          return { insertions: next };
+        });
+      },
+      getField: (positionId: string) => {
+        const { frameId, insertions } = get();
+
+        assertFrameId(frameId);
+        assertInsertions(insertions);
+
+        const fieldId = insertions.getKey(positionId);
+        if (!fieldId) return null;
+
+        const frame = getFrame(frameId);
+        return frame.fields.find((f) => f.id === fieldId)!;
       },
     }),
     {
