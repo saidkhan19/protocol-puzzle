@@ -51,7 +51,7 @@ const GameBlock = () => {
       <motion.div key={gameStartTime} layout className="flex flex-col gap-10">
         <ProtocolStructure />
 
-        <div className="min-h-60">
+        <div className="min-h-50">
           {gameStatus === "active" ? <ProtocolFields /> : <Results />}
         </div>
       </motion.div>

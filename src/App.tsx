@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 import type { Page } from "./types/page";
+import ErrorBoundary from "./components/ErrorBoundary";
 import Footer from "./components/layout/Footer";
 import Header from "./components/layout/Header";
 import GameMenu from "./components/GameMenu";
@@ -11,7 +12,7 @@ const App = () => {
   const [page, setPage] = useState<Page>("menu");
 
   return (
-    <>
+    <ErrorBoundary>
       <Header />
       <main className="min-h-[700px] w-full max-w-2xl mt-4 sm:mt-8 px-2 py-8 sm:p-8 bg-sky-50 border-4 border-blue-900 rounded-4xl shadow-hard-primary-8">
         {page === "menu" && <GameMenu setPage={setPage} />}
@@ -19,7 +20,7 @@ const App = () => {
         {page === "learn" && <LearnMenu setPage={setPage} />}
       </main>
       <Footer />
-    </>
+    </ErrorBoundary>
   );
 };
 

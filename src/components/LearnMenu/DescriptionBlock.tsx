@@ -7,7 +7,7 @@ type DescriptionBlockProps = {
 
 const DescriptionBlock = ({ protocol, field }: DescriptionBlockProps) => {
   return (
-    <div className="min-h-60 sm:min-h-48 w-3/4 sm:w-2/3 mt-8 p-4 sm:p-6 my-border-dashed-black">
+    <div className="min-h-60 sm:min-h-48 w-3/4 sm:w-2/3 mt-8 p-4 sm:p-6 flex items-center justify-center my-border-dashed-black">
       {field ? (
         <div>
           <p className="font-bold text-center">{field.name}</p>

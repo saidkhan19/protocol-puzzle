@@ -1,59 +1,39 @@
-import type { Dispatch, SetStateAction } from "react";
-
 import type { ProtocolField, ProtocolFrame } from "@/data";
-import { getField } from "@/utils/data-transforms";
+import { useActiveFrame } from "@/store/selectors";
+import Field from "./Field";
 
 type FieldsProps = {
-  frame: ProtocolFrame;
   activeField: ProtocolField | null;
-  setActiveField: Dispatch<SetStateAction<ProtocolField | null>>;
+  setActiveField: (field: ProtocolField) => void;
 };
 
 type FieldRowProps = FieldsProps & {
   row: ProtocolFrame["structure"][number];
 };
 
-const FieldRow = ({
-  frame,
-  row,
-  activeField,
-  setActiveField,
-}: FieldRowProps) => {
+const FieldRow = ({ row, activeField, setActiveField }: FieldRowProps) => {
   return (
     <div className="flex">
-      {row.map((field) => {
-        const currentField = getField(frame, field.fieldId);
-
-        return (
-          <div
-            key={field.fieldId}
-            style={{ width: `${field.width}%` }}
-            className="p-1 sm:p-1.5"
-          >
-            <div
-              className={`h-11 px-0.5 flex justify-center items-center border-2 sm:border-3 border-blue-900 shadow-hard-primary-2 rounded-2xl cursor-pointer ${
-                activeField === currentField ? "bg-amber-500" : ""
-              }`}
-              onClick={() => setActiveField(currentField)}
-            >
-              <span className="text-center font-bold text-xs sm:text-sm tracking-widest leading-none text-clip overflow-hidden select-none">
-                {currentField.name}
-              </span>
-            </div>
-          </div>
-        );
-      })}
+      {row.map((field) => (
+        <Field
+          key={field.fieldId}
+          field={field}
+          activeField={activeField}
+          setActiveField={setActiveField}
+        />
+      ))}
     </div>
   );
 };
 
-const Fields = ({ frame, activeField, setActiveField }: FieldsProps) => {
+const Fields = ({ activeField, setActiveField }: FieldsProps) => {
+  const frame = useActiveFrame();
+
   return (
     <div className="w-full mt-6">
       {frame.structure.map((row, i) => (
         <FieldRow
           key={i}
-          frame={frame}
           row={row}
           activeField={activeField}
           setActiveField={setActiveField}

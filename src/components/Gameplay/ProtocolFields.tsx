@@ -32,7 +32,7 @@ const ProtocolFields = () => {
     );
 
   return (
-    <div className="flex flex-wrap gap-4 justify-center">
+    <div className="flex flex-wrap gap-4 justify-center items-center">
       {displayedFields.map((f) => (
         <DraggableField key={f.id} field={f} />
       ))}
