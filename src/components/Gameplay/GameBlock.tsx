@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { motion } from "motion/react";
 import {
   DndContext,
   DragOverlay,
@@ -15,11 +16,13 @@ import ProtocolFields from "./ProtocolFields";
 import Field from "./Field";
 import useGameStore from "@/store/useGameStore";
 import { useActiveFrame } from "@/store/selectors";
+import Results from "./Results";
 
 const GameBlock = () => {
   const [activeId, setActiveId] = useState<string | null>(null);
   const frame = useActiveFrame();
   const gameStatus = useGameStore((state) => state.gameStatus);
+  const gameStartTime = useGameStore((state) => state.gameStartTime);
   const insertField = useGameStore((state) => state.insertField);
 
   const activeField = activeId && getField(frame, activeId);
@@ -45,13 +48,13 @@ const GameBlock = () => {
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
     >
-      <div className="flex flex-col gap-10">
+      <motion.div key={gameStartTime} layout className="flex flex-col gap-10">
         <ProtocolStructure />
 
         <div className="min-h-60">
-          <ProtocolFields />
+          {gameStatus === "active" ? <ProtocolFields /> : <Results />}
         </div>
-      </div>
+      </motion.div>
       <DragOverlay dropAnimation={null}>
         {activeField ? <Field field={activeField} isDragging={true} /> : null}
       </DragOverlay>

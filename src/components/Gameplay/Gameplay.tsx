@@ -12,6 +12,7 @@ type GamePlayProps = {
 
 const Gameplay = ({ setPage }: GamePlayProps) => {
   const frame = useActiveFrame();
+  const gameStatus = useGameStore((state) => state.gameStatus);
   const duration = useGameStore((state) => state.gameDuration);
   const resetGame = useGameStore((state) => state.resetGame);
 
@@ -21,15 +22,17 @@ const Gameplay = ({ setPage }: GamePlayProps) => {
   };
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-10">
       <div className="relative w-full flex justify-center">
         <GoBackButton onClick={handleGoBack} />
         <h2 className="font-bold text-2xl sm:text-4xl">{frame.gameTitle}</h2>
       </div>
-      <div className="py-6 flex justify-center">
-        {typeof duration === "number" ? <Timer /> : <InfiniteTimer />}
-      </div>
 
+      {gameStatus === "active" && (
+        <div className="flex justify-center">
+          {typeof duration === "number" ? <Timer /> : <InfiniteTimer />}
+        </div>
+      )}
       <GameBlock />
     </div>
   );

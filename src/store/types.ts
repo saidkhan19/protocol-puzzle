@@ -17,8 +17,12 @@ export type GameStoreState = {
   bestTime: Record<string, number>; // Map each frameId to its bestTime
   timeoutId?: ReturnType<typeof setTimeout>;
   insertions?: BiMap<string, string>; // Map fieldId to positionId
-  insertField: (fieldId: string, positionId: string) => void;
-  getField: (positionId: string) => ProtocolField | null;
+  gameResultPayload?: {
+    total: number;
+    correct: number;
+    duration: number;
+    previousRecord?: number;
+  };
 };
 
 export type GameStoreActions = {
@@ -27,6 +31,8 @@ export type GameStoreActions = {
   startGame: () => Promise<void>;
   stopGame: (timeout?: boolean) => void;
   resetGame: () => void;
+  insertField: (fieldId: string, positionId: string) => void;
+  getField: (positionId: string) => ProtocolField | null;
 };
 
 export type GameStore = GameStoreState & GameStoreActions;

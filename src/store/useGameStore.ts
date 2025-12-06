@@ -53,24 +53,31 @@ const useGameStore = create<GameStore>()(
         assertGameStartTime(gameStartTime);
 
         const frame = getFrame(frameId);
-        const hasWon = frame.fields.every((f) => insertions.get(f.id) === f.id);
+        const total = frame.fields.length;
+        const correct = frame.fields.filter(
+          (f) => insertions.get(f.id) === f.id
+        ).length;
+        const duration = getElapsedTimeInSeconds(gameStartTime);
 
-        const status: GameStatus = hasWon
-          ? "won"
-          : timeout
-          ? "timeout"
-          : "lost";
+        const status: GameStatus =
+          total === correct ? "won" : timeout ? "timeout" : "lost";
+
+        const gameResultPayload: GameStore["gameResultPayload"] = {
+          total,
+          correct,
+          duration,
+        };
 
         // Calculate best time
         const bestTime: GameStore["bestTime"] = { ...state.bestTime };
         if (status === "won") {
-          const time = getElapsedTimeInSeconds(gameStartTime);
-          const prevTime = bestTime[frameId] ?? Infinity;
+          gameResultPayload.previousRecord = bestTime[frameId];
 
-          bestTime[frameId] = time < prevTime ? time : prevTime;
+          const prevTime = bestTime[frameId] ?? Infinity;
+          bestTime[frameId] = duration < prevTime ? duration : prevTime;
         }
 
-        set({ gameStatus: status, bestTime });
+        set({ gameStatus: status, bestTime, gameResultPayload });
       },
       resetGame: () => {
         // Clear the timeout
@@ -80,6 +87,7 @@ const useGameStore = create<GameStore>()(
           gameStatus: "idle",
           gameStartTime: null,
           insertions: undefined,
+          gameResultPayload: undefined,
         });
       },
       insertField: (fieldId, positionId) => {

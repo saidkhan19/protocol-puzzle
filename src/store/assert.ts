@@ -17,3 +17,11 @@ export function assertGameStartTime(
 ): asserts gameStartTime is NonNullable<GameStoreState["gameStartTime"]> {
   if (!gameStartTime) throw new Error("Game start time is not initialized");
 }
+
+export function assertGameResults(
+  gameResultPayload: GameStoreState["gameResultPayload"]
+): asserts gameResultPayload is NonNullable<
+  GameStoreState["gameResultPayload"]
+> {
+  if (!gameResultPayload) throw new Error("Game results is not initialized");
+}
